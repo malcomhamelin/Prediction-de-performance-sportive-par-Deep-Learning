@@ -52,8 +52,8 @@ class DBQuery:
         req = "INSERT INTO match_nba(idMatch, idEquipeDom, idEquipeExt, saison, date, resultatFinal)" \
               "VALUES(%s, %s, %s, %s, %s, %s)"
         result = 0 if infoResultat[0]['PTS'] > infoResultat[1]['PTS'] else 1
-        params = (infoMatch['GAME_ID'], infoMatch['HOME_TEAM_ID'], infoMatch['VISITOR_TEAM_ID'], infoMatch['SEASON'],
-                  infoMatch['GAME_DATE_EST'], result)
+        params = (infoMatch[0]['GAME_ID'], infoMatch[0]['HOME_TEAM_ID'], infoMatch[0]['VISITOR_TEAM_ID'], infoMatch[0]['SEASON'],
+                  infoMatch[0]['GAME_DATE_EST'], result)
         self._change_query(req, params)
         return
 
@@ -69,7 +69,3 @@ class DBQuery:
                   infoMatch['PLUS_MINUS'], int(m))
         self._change_query(req, params)
         return
-
-
-
-
