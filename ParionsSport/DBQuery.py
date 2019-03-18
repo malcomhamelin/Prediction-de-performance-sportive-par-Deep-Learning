@@ -57,6 +57,18 @@ class DBQuery:
         self._change_query(req, params)
         return
 
+    def insert_stats_equipe_match_nba(self, infoMatch):
+        req = "INSERT INTO stats_equipe_match_nba(idEquipe, idMatch, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, " \
+              "ft_pct, oreb, dreb, reb, ast, stl, blk, turnover, pf, pts, plus_minus, min) VALUES(%s, %s, %s, %s, %s, " \
+              "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        m, s = infoMatch["MIN"].split(":")
+        params = (infoMatch['TEAM_ID'], infoMatch['GAME_ID'], infoMatch['FGM'], infoMatch['FGA'], infoMatch['FG_PCT'],
+                  infoMatch['FG3M'], infoMatch['FG3A'], infoMatch['FG3_PCT'], infoMatch['FTM'], infoMatch['FTA'],
+                  infoMatch['FT_PCT'], infoMatch['OREB'], infoMatch['DREB'], infoMatch['REB'], infoMatch['AST'],
+                  infoMatch['STL'], infoMatch['BLK'], infoMatch['TO'], infoMatch['PF'], infoMatch['PTS'],
+                  infoMatch['PLUS_MINUS'], int(m))
+        self._change_query(req, params)
+        return
 
 
 
