@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 18 mars 2019 à 09:02
+-- Généré le :  lun. 18 mars 2019 à 10:22
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.1.16
 
@@ -61,8 +61,7 @@ CREATE TABLE IF NOT EXISTS `match_nba` (
   `idEquipeExt` int(11) NOT NULL,
   `saison` varchar(16) NOT NULL,
   `date` date NOT NULL,
-  `resultat4QT` int(11) NOT NULL,
-  `resultatFinal` int(11) NOT NULL,
+  `resultat` int(11) NOT NULL,
   PRIMARY KEY (`idMatch`),
   KEY `idEquipeDom_fk` (`idEquipeDom`),
   KEY `idEquipeExt_fk` (`idEquipeExt`)
@@ -137,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `stats_equipe_match_nba` (
   `pf` int(11) NOT NULL,
   `pts` int(11) NOT NULL,
   `plus_minus` int(11) NOT NULL,
+  `min` int(11) NOT NULL,
   PRIMARY KEY (`idEquipe`,`idMatch`),
   KEY `idMatchStats_fk` (`idMatch`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
