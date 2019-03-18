@@ -41,3 +41,9 @@ class DBQuery:
         params = (infoEquipe['TEAM_ID'], infoEquipe['TEAM_NAME'])
         self._change_query(req, params)
         return
+
+    def insert_joueur_nba(self, infoJoueur):
+        req = "INSERT INTO joueur_nba(idJoueur, nom) VALUES(%s, %s)"
+        params = (infoJoueur['PLAYER_ID'], infoJoueur['PLAYER'])
+        self._change_query(req, params)
+        return
