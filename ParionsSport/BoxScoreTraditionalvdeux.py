@@ -4,12 +4,12 @@ from DBQuery import DBQuery
 
 class BoxScoreTraditionalvdeux(EndPointGetter):
 
-    def __init__(self, GameID):
+    def __init__(self, GameID,i,j):
         self._endpoint = "boxscoretraditionalv2"
         self._params = {
             "GameID":GameID,
-            "StartPeriod":1,
-            "EndPeriod":11,
+            "StartPeriod":i,
+            "EndPeriod":j,
             "StartRange":1,
             "EndRange":1,
             "RangeType":1

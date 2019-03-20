@@ -4,6 +4,9 @@ from CommonTeamRoster import CommonTeamRoster
 from TeamGameLog import  TeamGameLog
 from BoxScoreTraditionalvdeux import BoxScoreTraditionalvdeux
 from BoxScoreSummaryvdeux import BoxScoreSummaryvdeux
+from BoxScoreAdvancedvdeux import BoxScoreAdvancedvdeux
+
+
 
 db = DBQuery()
 
@@ -46,7 +49,7 @@ for i in range(idFirstTeam, idLastTeam+1):
     for game in tabGames:
         print('insertion stats match : ')
         print(game)
-        box = BoxScoreTraditionalvdeux(game)
+        box = BoxScoreTraditionalvdeux(game,1,11)
         tab = box.getRosterInfosFromAPI()
 
         if i == tab[0]['TEAM_ID']:
@@ -57,3 +60,13 @@ for i in range(idFirstTeam, idLastTeam+1):
             print("minutes : ")
             print(tab[0]['MIN'])
             db.insert_stats_equipe_match_nba(tab[1])
+
+        for j in range(1,11):
+
+            statsAdvQt = BoxScoreAdvancedvdeux(game, j)
+            statsTrdQt = BoxScoreTraditionalvdeux(game, j,j)
+
+            for joueur in Roster:
+                print("Insertion stats joueur quart-temps: ")
+                db.insert_quart_temps_nba(statsTrdQt,statsAdvQt)
+
