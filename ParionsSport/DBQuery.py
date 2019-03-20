@@ -69,3 +69,22 @@ class DBQuery:
                   infoMatch['PLUS_MINUS'], int(m))
         self._change_query(req, params)
         return
+
+    def insert_quart_temps_nba(self, infoTraditionnal, infoAdvanced):
+        req = "INSERT INTO quart_temps_nba(idMatch, idEquipe, idJoueur, positionDeDepart, tempsDeJeu, fgm, fga, fg_pct, " \
+              "fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, turnover, pf, pts, plus_minus, " \
+              "e_off_rating, off_rating, e_def_rating, def_rating, e_net_rating, net_rating) VALUES(%s, %s, %s, %s, %s, " \
+              "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        m, s = infoTraditionnal["MIN"].split(":")
+        params = (infoTraditionnal['GAME_ID'], infoTraditionnal['TEAM_ID'], infoTraditionnal['PLAYER_ID'],
+                  infoTraditionnal['POS'], int(m), infoTraditionnal['FGM'], infoTraditionnal['FGA'],
+                  infoTraditionnal['FG_PCT'], infoTraditionnal['FG3M'], infoTraditionnal['FG3A'],
+                  infoTraditionnal['FG3_PCT'], infoTraditionnal['FTM'], infoTraditionnal['FTA'],
+                  infoTraditionnal['FT_PCT'], infoTraditionnal['OREB'], infoTraditionnal['DREB'],
+                  infoTraditionnal['REB'], infoTraditionnal['AST'], infoTraditionnal['STL'], infoTraditionnal['BLK'],
+                  infoTraditionnal['TO'], infoTraditionnal['PF'], infoTraditionnal['PTS'],
+                  infoTraditionnal['PLUS_MINUS'], infoAdvanced['E_OFF_RATING'], infoAdvanced['OFF_RATING'],
+                  infoAdvanced['E_DEF_RATING'], infoAdvanced['DEF_RATING'], infoAdvanced['E_NET_RATING'],
+                  infoAdvanced['NET_RATING'])
+        self._change_query(req, params)
+        return

@@ -17,5 +17,5 @@ class BoxScoreTraditionalvdeux(EndPointGetter):
 
     def getRosterInfosFromAPI(self):
         results = self._request()
-        teams = self._api_scrape(0)
+        teams = self._api_scrape(1)
         return teams;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 18 mars 2019 à 10:22
+-- Généré le :  mar. 19 mars 2019 à 07:39
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.1.16
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `match_nba` (
   `idEquipeExt` int(11) NOT NULL,
   `saison` varchar(16) NOT NULL,
   `date` date NOT NULL,
-  `resultat` int(11) NOT NULL,
+  `resultatFinal` int(11) NOT NULL,
   PRIMARY KEY (`idMatch`),
   KEY `idEquipeDom_fk` (`idEquipeDom`),
   KEY `idEquipeExt_fk` (`idEquipeExt`)
@@ -103,8 +103,7 @@ CREATE TABLE IF NOT EXISTS `quart_temps_nba` (
   `e_net_rating` int(11) NOT NULL,
   `net_rating` int(11) NOT NULL,
   PRIMARY KEY (`idMatch`,`idJoueur`),
-  KEY `idEquipeQT_fk` (`idEquipe`),
-  KEY `idJoueurQT_fk` (`idJoueur`)
+  KEY `idEquipeQT_fk` (`idEquipe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -137,8 +136,7 @@ CREATE TABLE IF NOT EXISTS `stats_equipe_match_nba` (
   `pts` int(11) NOT NULL,
   `plus_minus` int(11) NOT NULL,
   `min` int(11) NOT NULL,
-  PRIMARY KEY (`idEquipe`,`idMatch`),
-  KEY `idMatchStats_fk` (`idMatch`)
+  PRIMARY KEY (`idEquipe`,`idMatch`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -157,15 +155,13 @@ ALTER TABLE `match_nba`
 --
 ALTER TABLE `quart_temps_nba`
   ADD CONSTRAINT `idEquipeQT_fk` FOREIGN KEY (`idEquipe`) REFERENCES `equipe_nba` (`idEquipe`),
-  ADD CONSTRAINT `idJoueurQT_fk` FOREIGN KEY (`idJoueur`) REFERENCES `joueur_nba` (`idJoueur`),
   ADD CONSTRAINT `idMatchQT_fk` FOREIGN KEY (`idMatch`) REFERENCES `match_nba` (`idMatch`);
 
 --
 -- Contraintes pour la table `stats_equipe_match_nba`
 --
 ALTER TABLE `stats_equipe_match_nba`
-  ADD CONSTRAINT `idEquipeStats_fk` FOREIGN KEY (`idEquipe`) REFERENCES `equipe_nba` (`idEquipe`),
-  ADD CONSTRAINT `idMatchStats_fk` FOREIGN KEY (`idMatch`) REFERENCES `match_nba` (`idMatch`);
+  ADD CONSTRAINT `idEquipeStats_fk` FOREIGN KEY (`idEquipe`) REFERENCES `equipe_nba` (`idEquipe`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
