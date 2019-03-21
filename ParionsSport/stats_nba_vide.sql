@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 19 mars 2019 à 07:39
+-- Généré le :  jeu. 21 mars 2019 à 10:30
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.1.16
 
@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `match_nba` (
 
 DROP TABLE IF EXISTS `quart_temps_nba`;
 CREATE TABLE IF NOT EXISTS `quart_temps_nba` (
+  `numQT` int(11) NOT NULL,
   `idMatch` int(11) NOT NULL,
   `idEquipe` int(11) NOT NULL,
   `idJoueur` int(11) NOT NULL,
@@ -102,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `quart_temps_nba` (
   `def_rating` int(11) NOT NULL,
   `e_net_rating` int(11) NOT NULL,
   `net_rating` int(11) NOT NULL,
-  PRIMARY KEY (`idMatch`,`idJoueur`),
+  PRIMARY KEY (`idMatch`,`idJoueur`,`numQT`) USING BTREE,
   KEY `idEquipeQT_fk` (`idEquipe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

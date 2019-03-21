@@ -4,12 +4,12 @@ from DBQuery import DBQuery
 
 class BoxScoreAdvancedvdeux(EndPointGetter, DBQuery):
 
-    def __init__(self, GameID,i):
+    def __init__(self, GameID, i, j):
         self._endpoint = "boxscoreadvancedv2"
         self._params = {
             "GameID": GameID,
             "StartPeriod":i,
-            "EndPeriod":i,
+            "EndPeriod":j,
             "StartRange":1,
             "EndRange":1,
             "RangeType":1
@@ -17,5 +17,6 @@ class BoxScoreAdvancedvdeux(EndPointGetter, DBQuery):
 
     def getQuarterInfosFromAPI(self):
         results = self._request()
-        teams = self._api_scrape(0)
-        return teams;
+        players = self._api_scrape(0)
+        teams = self._api_scrape(1)
+        return (players, teams);

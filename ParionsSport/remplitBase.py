@@ -10,63 +10,63 @@ from BoxScoreAdvancedvdeux import BoxScoreAdvancedvdeux
 
 db = DBQuery()
 
+majTeamsPlayers = True
+
 idFirstTeam = 1610612737
 idLastTeam = 1610612766
 
-for i in range(idFirstTeam, idLastTeam+1):
-    print("Insertion team n° : ")
-    print(i)
-    teamInfos = TeamInfoCommon(i)
-    tabTeamInfos = teamInfos.getTeamInfosFromAPI()[0]
-    db.insert_equipe_nba(tabTeamInfos)
+if majTeamsPlayers:
+    for i in range(idFirstTeam, idLastTeam+1):
+        # Insertion des équipes
+        print("Insertion team n° : ")
+        print(i)
+        teamInfos = TeamInfoCommon(i)
+        tabTeamInfos = teamInfos.getTeamInfosFromAPI()[0]
+        db.insert_equipe_nba(tabTeamInfos)
 
-    # TEAM ROOSTER
-    Roster = CommonTeamRoster(i, "2018-19")
-    Roster = Roster.getRosterInfosFromAPI()
-    for joueur in Roster:
-        print("Insertion joueur : ")
-        print(joueur["PLAYER"])
-        db.insert_joueur_nba(joueur)
+        # Insertion des joueurs
+        Roster = CommonTeamRoster(i, "2018-19")
+        Roster = Roster.getRosterInfosFromAPI()
+        for joueur in Roster:
+            print("Insertion joueur : ")
+            print(joueur["PLAYER"])
+            db.insert_joueur_nba(joueur)
 
 for i in range(idFirstTeam, idLastTeam+1):
-    # GAME LOG
+    # Recuparation des matchs de chaque equipe
     teamGLog = TeamGameLog(i, "2018-19")
     tabGames = teamGLog.getTeamGamesFromAPI()
     gamesAdded = list()
 
     for game in tabGames:
-        if game in gamesAdded:
-            print("Match déjà présent")
-            continue
-
-        print('insertion match : ')
-        print(game)
-        matchInfos = BoxScoreSummaryvdeux(game)
-        (tabInfoGeneral, tabInfoLineScore) = matchInfos.getScoreSummaryInfoFromAPI()
-        db.insert_match_nba(tabInfoGeneral, tabInfoLineScore)
-        gamesAdded.append(game)
+        # Insertion des matchs de chaque équipe
+        if len(db.select_match(game)) == 0:
+            print('insertion match : ')
+            print(game)
+            matchInfos = BoxScoreSummaryvdeux(game)
+            (tabInfoGeneral, tabInfoLineScore) = matchInfos.getScoreSummaryInfoFromAPI()
+            db.insert_match_nba(tabInfoGeneral, tabInfoLineScore)
 
     for game in tabGames:
+        # Insertion des stats des matchs de chaque équipe
         print('insertion stats match : ')
         print(game)
-        box = BoxScoreTraditionalvdeux(game,1,11)
-        tab = box.getRosterInfosFromAPI()
+        boxTraditionnal = BoxScoreTraditionalvdeux(game, 1, 11)
+        statsTraditionnalPlayers, statsTraditionnalTeam = boxTraditionnal.getRosterInfosFromAPI()
 
-        if i == tab[0]['TEAM_ID']:
-            print("minutes : ")
-            print(tab[0]['MIN'])
-            db.insert_stats_equipe_match_nba(tab[0])
+        if i == statsTraditionnalTeam[0]['TEAM_ID']:
+            db.insert_stats_equipe_match_nba(statsTraditionnalTeam[0])
         else:
-            print("minutes : ")
-            print(tab[0]['MIN'])
-            db.insert_stats_equipe_match_nba(tab[1])
+            db.insert_stats_equipe_match_nba(statsTraditionnalTeam[1])
 
-        for j in range(1,11):
+        # Insertion des statistiques pour chaque quart temps de chaque joueur
+        if len(db.select_stats_match(game)) == 0:
+            for j in range(1, 11):
+                boxAdvancedQT = BoxScoreAdvancedvdeux(game, j, j)
+                boxTraditionnalQT = BoxScoreTraditionalvdeux(game, j, j)
+                statsAdvancedPlayersQT, statsAdvancedTeamsQT = boxAdvancedQT.getQuarterInfosFromAPI()
+                statsTraditionnalPlayersQT, statsTraditionnalTeamsQT = boxTraditionnalQT.getRosterInfosFromAPI()
 
-            statsAdvQt = BoxScoreAdvancedvdeux(game, j)
-            statsTrdQt = BoxScoreTraditionalvdeux(game, j,j)
-
-            for joueur in Roster:
-                print("Insertion stats joueur quart-temps: ")
-                db.insert_quart_temps_nba(statsTrdQt,statsAdvQt)
-
+                for noJoueur in range(0, len(statsTraditionnalPlayersQT)):
+                    db.insert_quart_temps_nba(j, statsTraditionnalPlayersQT[noJoueur],
+                                              statsAdvancedPlayersQT[noJoueur])
