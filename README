@@ -1,1 +1,10 @@
+Prédiction de résultats sportifs par Deep Learning
 
+Librairies à installer pour la bonne utilisation de ces classes :
+- mysql.connector
+- fake_useragent
+- requests
+- numpy
+- tensorflow
+- keras
+- sys
